@@ -1,4 +1,4 @@
-package com.aleksandar.messenger;
+package com.aleksandar.messenger.exception;
 
 import java.util.Date;
 

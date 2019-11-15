@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.ws.rs.core.Response;
 
+import com.aleksandar.messenger.exception.ResourceAccessDeniedException;
+import com.aleksandar.messenger.exception.ResourceNotFoundException;
 import com.aleksandar.messenger.model.ApplicationUser;
 import com.aleksandar.messenger.model.Post;
 import com.aleksandar.messenger.service.PostService;
@@ -51,5 +53,24 @@ public class PostServiceImpl implements PostService{
 		posts.put(id, post);
 		return Response.status(Response.Status.CREATED).build();
 	}
+
+
+
+	@Override
+	public Post updatePost(int id, Post post, int userId){
+		Post foundPost = posts.entrySet()
+		.stream()
+		.filter(p -> p.getKey() == id)
+		.findFirst()
+		.map(m -> m.getValue())
+		.orElseThrow(() -> new ResourceNotFoundException("Post with this id doesn't exist"));
+		if(foundPost.getUser().getId() != userId) {
+			throw new ResourceAccessDeniedException("You don't have access to modify this post");
+		}
+		foundPost.setText(post.getText());
+		return foundPost;
+	}
+	
+	
 
 }

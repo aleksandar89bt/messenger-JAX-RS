@@ -2,7 +2,7 @@ package com.aleksandar.messenger.utils;
 
 import java.util.Map;
 
-import com.aleksandar.messenger.ResourceNotFoundException;
+import com.aleksandar.messenger.exception.ResourceNotFoundException;
 import com.aleksandar.messenger.model.ApplicationUser;
 
 public class HelperUtils {

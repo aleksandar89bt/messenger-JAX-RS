@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.ws.rs.core.Response;
 
+import com.aleksandar.messenger.exception.ResourceAccessDeniedException;
+import com.aleksandar.messenger.exception.ResourceNotFoundException;
 import com.aleksandar.messenger.model.ApplicationUser;
 import com.aleksandar.messenger.model.Comment;
 import com.aleksandar.messenger.model.ExceptionModel;
@@ -27,6 +29,26 @@ public class CommentServiceImpl implements CommentService {
 		}
 		return post.getComments();
 	}
+	
+
+	@Override
+	public Comment updateComment(int id, int postId, Comment comment, int userId) {
+		Comment c = posts.entrySet()
+		.stream()
+		.filter(p -> p.getKey() == postId)
+		.map(m -> m.getValue().getComments())
+		.flatMap(m -> m.stream())
+		.filter(p -> p.getId() == id)
+		.findFirst()
+		.orElseThrow(() -> new ResourceNotFoundException("This comment does not exist"));
+		
+		if(c.getSender().getId() != userId) {
+			throw new ResourceAccessDeniedException("You don't have permission to modify this comment");
+		}
+		c.setComment(comment.getComment());
+		return c;
+	}
+
 
 	@Override
 	public Response addComment(int postId, Comment comment, int userId) {

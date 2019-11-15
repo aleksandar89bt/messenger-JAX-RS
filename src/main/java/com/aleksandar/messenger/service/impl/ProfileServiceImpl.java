@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
-import com.aleksandar.messenger.ResourceNotFoundException;
+import com.aleksandar.messenger.exception.ResourceNotFoundException;
 import com.aleksandar.messenger.model.ApplicationUser;
 import com.aleksandar.messenger.model.Upload;
 import com.aleksandar.messenger.service.ProfileService;
