@@ -8,7 +8,7 @@ public class FolderUtils {
 		return System.getProperty("os.name").toLowerCase().contains("windows");
 	}
 	
-	public static String folderName() {
+	public static File folderName(int userId) {
 		File home;
 		if (isWindows()) {
 			home = new File("C:\\");
@@ -16,11 +16,11 @@ public class FolderUtils {
 			home = new File("/var/");
 		}
 		
-		File appFolder = getAppFolder(home);
-		return appFolder.getPath();
+		File appFolder = getAppFolder(home, userId);
+		return appFolder;
 	}
 	
-	private static File getAppFolder(File home) {
+	public static File getAppFolder(File home, int userId) {
 		File root = new File(home, "Messenger");
 		if (!root.exists()) {
 			root.mkdir();
@@ -29,8 +29,17 @@ public class FolderUtils {
 		if (!upload.exists()) {
 			upload.mkdir();
 		}
+		File profile = new File(upload, "profile");
+		if (!profile.exists()) {
+			profile.mkdir();
+		}
+		File user = new File(profile, String.valueOf(userId));
+		if (!user.exists()) {
+			user.mkdir();
+		}
+				
 		
-		return upload;
+		return user;
 	}
 	
 	public static String getSlash() {

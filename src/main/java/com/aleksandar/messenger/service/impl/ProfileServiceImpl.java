@@ -89,10 +89,15 @@ public class ProfileServiceImpl implements ProfileService{
 
 	@Override
 	public Response uploadProfileImg(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, Integer userId) {
-		String folderName = FolderUtils.folderName();
+		File folder = FolderUtils.folderName(userId);
 		String slash = FolderUtils.getSlash();
 		
-		String uploadedLocation = folderName + slash + fileDetail.getFileName();
+		String uploadedLocation = folder.getPath() + slash + fileDetail.getFileName();
+		for (File f : folder.listFiles()) {
+			if (f.isFile()) {
+				f.delete();
+			}
+		}
 		writeToFile(uploadedInputStream, uploadedLocation);
 		String output = "File uploaded to: " + uploadedLocation;
 		
