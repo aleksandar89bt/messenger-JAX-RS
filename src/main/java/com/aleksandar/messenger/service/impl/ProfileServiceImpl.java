@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
+import com.aleksandar.messenger.exception.ResourceAccessDeniedException;
 import com.aleksandar.messenger.exception.ResourceNotFoundException;
 import com.aleksandar.messenger.model.ApplicationUser;
 import com.aleksandar.messenger.model.Upload;
@@ -46,6 +48,36 @@ public class ProfileServiceImpl implements ProfileService{
 				.collect(Collectors.toList());
 	}
 	
+	
+	@Override
+	public ApplicationUser getUser(int id) {
+		return users.entrySet()
+				.stream()
+				.map(m -> m.getValue())
+				.filter(p -> p.getId() == id)
+				.findFirst()
+				.orElseThrow(() -> new ResourceNotFoundException());
+	}
+	
+	
+
+	@Override
+	public ApplicationUser updateUser(int id, ApplicationUser user, int userId) {
+		ApplicationUser currentUser = users.entrySet()
+		.stream()
+		.map(m -> m.getValue())
+		.filter(p -> p.getId() == id)
+		.findFirst()
+		.orElseThrow(() -> new ResourceNotFoundException());
+		if(currentUser.getId() != userId) {
+			throw new ResourceAccessDeniedException("You don't have access to update this user");
+		}
+		currentUser.setFirstName(user.getFirstName());
+		currentUser.setLastName(user.getLastName());
+		currentUser.setUpdated(new Date());
+		return currentUser;
+	}
+
 	@Override
 	public Upload getUpload(int userId) {
 		return uploads.entrySet()

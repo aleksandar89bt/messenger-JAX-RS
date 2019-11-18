@@ -1,17 +1,10 @@
 package com.aleksandar.messenger.model;
 
-public class Comment {
+public class Comment extends Base{
 
-	private int id;
 	private String comment;
 	private ApplicationUser user;
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getComment() {
 		return comment;
 	}

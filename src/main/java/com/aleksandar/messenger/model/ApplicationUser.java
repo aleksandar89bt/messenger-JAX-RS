@@ -1,7 +1,6 @@
 package com.aleksandar.messenger.model;
 
-public class ApplicationUser {
-	private long id;
+public class ApplicationUser extends Base{
 	private String firstName;
 	private String lastName;
 	private Upload upload;
@@ -17,19 +16,13 @@ public class ApplicationUser {
 		this.lastName = lastName;
 	}
 	
-	public ApplicationUser(long id, String firstName, String lastName) {
+	public ApplicationUser(int id, String firstName, String lastName) {
 		super();
-		this.id = id;
+		this.setId(id);
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
 	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public String getFirstName() {
 		return firstName;
 	}

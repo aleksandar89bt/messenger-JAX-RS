@@ -3,6 +3,7 @@ package com.aleksandar.messenger.resource;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -46,6 +47,14 @@ public class PostResource {
 	@Path("/{id}")
 	public Post updatePost(@PathParam("id") int id, Post post, @QueryParam("userId") int userId) {
 		return service.updatePost(id, post, userId);
+	}
+	
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
+	public Response deletePost(@PathParam("id")int postId, @QueryParam("userId")int userId) {
+		return service.deletePost(postId, userId);
 	}
 	
 }

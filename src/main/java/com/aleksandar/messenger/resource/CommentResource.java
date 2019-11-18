@@ -3,6 +3,7 @@ package com.aleksandar.messenger.resource;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -41,5 +42,13 @@ public class CommentResource {
 	@Path("/{id}")
 	public Comment updateComment(@PathParam("id") int id, @QueryParam("postId")int postId, Comment comment, @QueryParam("userId") int userId) {
 		return service.updateComment(id, postId, comment, userId);
+	}
+	
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{id}")
+	public Response deleteComment( @QueryParam("postId")int postId, @PathParam("id") int id, @QueryParam("userId") int userId) {
+		return service.deleteComment(postId, id, userId);
 	}
 }

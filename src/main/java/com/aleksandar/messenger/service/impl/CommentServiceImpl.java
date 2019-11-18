@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.core.Response;
 
@@ -46,6 +47,7 @@ public class CommentServiceImpl implements CommentService {
 			throw new ResourceAccessDeniedException("You don't have permission to modify this comment");
 		}
 		c.setComment(comment.getComment());
+		c.setUpdated(new Date());
 		return c;
 	}
 
@@ -61,9 +63,29 @@ public class CommentServiceImpl implements CommentService {
 		ApplicationUser user = HelperUtils.findUserById(users, userId);
 		comment.setId(id);
 		comment.setSender(user);
+		comment.setCreated(new Date());
+		comment.setUpdated(new Date());
 		post.getComments().add(comment);
 		return Response.status(Response.Status.CREATED).build();
 	}
+
+	
+	@Override
+	public Response deleteComment(int postId, int commentId, int userId) {
+		List<Comment> comments = posts.entrySet()
+		.stream()
+		.filter(p -> p.getKey() == postId)
+		.flatMap(m -> m.getValue().getComments().stream())
+		.collect(Collectors.toList());
+		boolean isRemoved = comments.removeIf(p -> p.getId() == commentId && p.getSender().getId() == userId);
+		Post post = findPostById(postId);
+		if(post == null) {
+			return Response.status(Response.Status.NOT_FOUND).entity(new ExceptionModel("Post not found", new Date())).build();
+		}
+		post.setComments(comments);
+		return isRemoved ? Response.status(Response.Status.NO_CONTENT).build() : Response.status(Response.Status.NOT_FOUND).entity(new ExceptionModel("Comment not found", new Date())).build();
+	}
+
 
 	private Post findPostById(int id) {
 		if (posts.size() < id - 1) {

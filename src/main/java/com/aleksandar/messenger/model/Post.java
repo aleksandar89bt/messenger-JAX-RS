@@ -3,9 +3,8 @@ package com.aleksandar.messenger.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Post {
+public class Post extends Base{
 
-	private int id;
 	private String text;
 	private ApplicationUser user;
 	private List<Comment> comments = new ArrayList<>();
@@ -17,18 +16,12 @@ public class Post {
 	
 	public Post(int id, String text, ApplicationUser user) {
 		super();
-		this.id = id;
+		this.setId(id);
 		this.text = text;
 		this.user = user;
 	}
 
 
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getText() {
 		return text;
 	}
@@ -54,7 +47,7 @@ public class Post {
 
 	@Override
 	public String toString() {
-		return "Message [id=" + id + ", text=" + text + ", user=" + user + "]";
+		return "Message [id=" + getId() + ", text=" + text + ", user=" + user + "]";
 	}
 	
 }

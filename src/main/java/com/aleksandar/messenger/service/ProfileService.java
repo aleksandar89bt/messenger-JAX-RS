@@ -14,10 +14,10 @@ public interface ProfileService {
 
 	Response createUser(ApplicationUser user);
 	List<ApplicationUser> getUsers();
+	ApplicationUser getUser(int id);
+	ApplicationUser updateUser(int id, ApplicationUser user, int userId);
 	
 	Response uploadProfileImg(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, Integer userId);
-	
 	Upload getUpload(int userId);
-	
 	String getProfileImg(int userId);
 }
